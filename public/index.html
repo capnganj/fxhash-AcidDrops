@@ -50,6 +50,8 @@ uniform float speed;
 attribute vec2 uv2;
 
 varying vec3 vPosition;
+varying vec3 vWorldPosition;
+varying vec3 vViewPosition;
 varying vec3 vNormal;
 varying vec2 vUv;
 varying vec2 vUv2;
@@ -150,6 +152,8 @@ void main() {
   vUv = uv;
   vUv2 = uv2;
   vPosition = position;
+  vWorldPosition = position;
+  vViewPosition = position;
 
   vNoise = cnoise(normalize(position) * scale + ( time * speed ) );
   vec3 pos = position + normal * vNoise * vec3(displacement);

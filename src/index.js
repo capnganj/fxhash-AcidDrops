@@ -6,8 +6,12 @@ import { Features } from './Features';
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-import Bunny from './bunnyUV.obj';
+import NX from './nx.png';
+import NY from './ny.png';
+import NZ from './nz.png';
+import PX from './px.png';
+import PY from './py.png';
+import PZ from './pz.png';
 
 
 //1) - generate fxhash features - global driving parameters
@@ -42,8 +46,14 @@ let previewed = false;
 //2) Initialize three.js scene and start the render loop
 //all data driving geometry and materials and whatever else should be generated in step 2
 
+//cube environment map.  Starting with some sample three textures; intending to generate these on the fly TODO
+const urls = [PX,NX,PY,NY,PZ,NZ];
+const cuber = new THREE.CubeTextureLoader().load(urls, () => {this.loaded = true});
+cuber.mapping = THREE.CubeRefractionMapping;
+
 //scene & camera
 let scene = new THREE.Scene();
+scene.background = cuber;
 
 let renderer = new THREE.WebGLRenderer( { 
   antialias: true,
@@ -57,8 +67,20 @@ let camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHe
 camera.position.set( 0, 3, 4 );
 
 //lights
-//const amb = new THREE.AmbientLight(0xffffff);
-//scene.add(amb);
+const p1 = new THREE.PointLight( 0xcccccc, 1);
+p1.position.set( 5, 5, 5);
+scene.add(p1);
+const p2 = new THREE.PointLight( 0xcccccc, 1);
+p2.position.set( -5, 3, -5);
+scene.add(p2);
+const p3 = new THREE.PointLight( 0xcccccc, 1);
+p3.position.set( -5, 1, 5);
+scene.add(p3);
+const p4 = new THREE.PointLight( 0xcccccc, 1);
+p4.position.set( 5, 1, -5);
+scene.add(p4);
+const hem = new THREE.HemisphereLight( 0xcccccc, 0xdedede, 0.666);
+scene.add(hem);
 
 // controls
 let controls = new OrbitControls( camera, renderer.domElement );
@@ -90,29 +112,39 @@ let uniforms = {
   color3: { value: [feet.color.tres.r/255,feet.color.tres.g/255,feet.color.tres.b/255]},
 };
 
-//bunny model load
-const objLoader = new OBJLoader();
-objLoader.load(Bunny, (bunny) => {
 
-  //placeholder material for testing
-  //const material2 = new THREE.MeshNormalMaterial({side: THREE.DoubleSide});
 
-  //first shot at a shader material
-  const material = new THREE.ShaderMaterial({
-    uniforms: uniforms,
-    vertexShader: document.getElementById( 'vertexShader' ).textContent,
-		fragmentShader: document.getElementById( 'fragmentShader' ).textContent 
-  });
-  
-  //add mesh to scene <3
-  const mesh = new THREE.Mesh(bunny.children[0].geometry, material);
-  mesh.scale.set(20,20,20);
-  mesh.position.y -= 2;
-  scene.add(mesh);
+//bubble geometry
+const b = new THREE.IcosahedronGeometry(1.5, 7);
 
-  //loaded flag for fxhash capture
-  loaded = true;
-})
+//shader material from bunny on shrrooooms - replace this with a phong material using the vertex shader from here
+const material = new THREE.ShaderMaterial({
+  uniforms: uniforms,
+  vertexShader: document.getElementById( 'vertexShader' ).textContent,
+  fragmentShader: document.getElementById( 'fragmentShader' ).textContent 
+});
+
+//phong
+const m = new THREE.MeshPhongMaterial({
+  side: THREE.DoubleSide,
+  envMap: cuber,
+  refractionRatio: 0.9,
+  reflectivity: 0.99,
+  opacity: 0.5,
+  transparent: true
+});
+let matShader;
+m.onBeforeCompile = function(shader){
+  shader.vertexShader = document.getElementById( 'vertexShader' ).textContent;
+  shader.uniforms.time = { value: 0.01 };
+  shader.uniforms.scale = { value: 1.0};
+  shader.uniforms.displacement = feet.scale.dispValue;
+  shader.uniforms.speed = feet.speed.vertexValue;
+  matShader = shader;
+}
+
+const mesh = new THREE.Mesh(b, m);
+scene.add(mesh);
 
 
 //set the background color 
@@ -138,12 +170,15 @@ function onWindowResize() {
 
 function animate() {
 
-  requestAnimationFrame( animate );
+  
 
-  uniforms[ 'time' ].value = performance.now() / 1000;
+  if (matShader) {
+    matShader.uniforms.time.value = performance.now() / 1000;
+  }
+  
 
   controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
-
+  requestAnimationFrame( animate );
   render();
 
 }

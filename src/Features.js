@@ -153,7 +153,7 @@ class Features {
             this.scale.tag = "High";
         }
         this.scale.value = this.map(s, 0, 1, 1.0, 3.0);
-        this.scale.dispValue = this.map(s, 0, 1, 0.005, 0.02);
+        this.scale.dispValue = this.map(s, 0, 1, 0.125, 0.25);
     }
 
     //set vertex and ragment speeds
