@@ -1,4 +1,4 @@
-//CAPNGANJ Bunny on Shrooms fxhash generative token
+//CAPNGANJ Bubblehash fxhash generative token
 //April, 2022
 
 //imports
@@ -64,7 +64,7 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
 let camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.01, 1000 );
-camera.position.set( 0, 3, 4 );
+camera.position.set( 0, 0, 4 );
 
 //lights
 const p1 = new THREE.PointLight( 0xcccccc, 1);
@@ -91,38 +91,10 @@ controls.maxDistance = 10;
 controls.minDistance = 2;
 
 
-//shader uniforms!
-let uniforms = {
-  //used by both vertex and fragment
-  time: { value: 1.0 },
-
-  //vertex only
-  scale: { value: 1.0 },
-  displacement: { value: feet.scale.dispValue },
-  speed: { value: feet.speed.vertexValue },
-
-  //fragment only
-  fragSpeed: { value: feet.speed.fragmentValue },
-  uvScale: { value: [feet.scale.value, feet.scale.value]},
-  brightness: { value: feet.brightness.value },
-  permutations: { value: feet.permutations.value },
-  iterations: { value: 1.0 },
-  color1: { value: [feet.color.uno.r/255,feet.color.uno.g/255,feet.color.uno.b/255]},
-  color2: { value: [feet.color.dos.r/255,feet.color.dos.g/255,feet.color.dos.b/255]},
-  color3: { value: [feet.color.tres.r/255,feet.color.tres.g/255,feet.color.tres.b/255]},
-};
-
-
 
 //bubble geometry
-const b = new THREE.IcosahedronGeometry(1.5, 7);
-
-//shader material from bunny on shrrooooms - replace this with a phong material using the vertex shader from here
-const material = new THREE.ShaderMaterial({
-  uniforms: uniforms,
-  vertexShader: document.getElementById( 'vertexShader' ).textContent,
-  fragmentShader: document.getElementById( 'fragmentShader' ).textContent 
-});
+const b = new THREE.IcosahedronGeometry(1.5,10);
+const t = new THREE.TorusGeometry(1.5,0.25, 25, 100);
 
 //phong
 const m = new THREE.MeshPhongMaterial({
@@ -135,11 +107,16 @@ const m = new THREE.MeshPhongMaterial({
 });
 let matShader;
 m.onBeforeCompile = function(shader){
-  shader.vertexShader = document.getElementById( 'vertexShader' ).textContent;
+
+  //try 2 - replace the shader chunk
+  shader.vertexShader = shader.vertexShader
+    .replace('#include <project_vertex>', document.getElementById( 'vertexShaderFragment' ).textContent)
+    .replace('#include <common>', '#include <common>' + document.getElementById('vertexShaderCommonFragment').textContent);
+
   shader.uniforms.time = { value: 0.01 };
-  shader.uniforms.scale = { value: 1.0};
-  shader.uniforms.displacement = feet.scale.dispValue;
-  shader.uniforms.speed = feet.speed.vertexValue;
+  shader.uniforms.scale = { value: 1.0 };
+  shader.uniforms.displacement = { value: feet.scale.dispValue };
+  shader.uniforms.speed = { value: feet.speed.vertexValue };
   matShader = shader;
 }
 
@@ -171,7 +148,6 @@ function onWindowResize() {
 function animate() {
 
   
-
   if (matShader) {
     matShader.uniforms.time.value = performance.now() / 1000;
   }
