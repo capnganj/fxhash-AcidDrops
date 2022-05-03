@@ -3,6 +3,7 @@
 
 //imports
 import { Features } from './Features';
+import { Textures } from './Textures';
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -51,6 +52,10 @@ const urls = [PX,NX,PY,NY,PZ,NZ];
 const cuber = new THREE.CubeTextureLoader().load(urls, () => {this.loaded = true});
 cuber.mapping = THREE.CubeRefractionMapping;
 
+//p5 textures generation
+let txt = new Textures();
+//console.log(txt.image());
+
 //scene & camera
 let scene = new THREE.Scene();
 scene.background = cuber;
@@ -93,14 +98,13 @@ controls.minDistance = 2;
 
 
 //bubble geometry
-const b = new THREE.IcosahedronGeometry(1.5,10);
-const t = new THREE.TorusGeometry(1.5,0.25, 25, 100);
+const b = new THREE.IcosahedronGeometry(1.5, 10);
 
 //phong
 const m = new THREE.MeshPhongMaterial({
   side: THREE.DoubleSide,
   envMap: cuber,
-  refractionRatio: 0.9,
+  refractionRatio: 0.85,
   reflectivity: 0.99,
   opacity: 0.5,
   transparent: true
