@@ -1,25 +1,26 @@
 import p5 from 'p5';
 
 class Textures {
-    constructor () {
+    constructor ( loaded ) {
         this.canvas = {};
         this.imageUrl = "";
-        const s = ( sk ) => {
 
-            sk.setup = () => {
-                this.canvas = sk.createCanvas(128,128);
-            
-            }
+        new p5();
 
-            sk.draw = () => {
-                sk.background(0);
-                sk.ellipse(64,64,64,64);
-                this.imageUrl = this.canvas.elt.toDataURL();
-                sk.noLoop();
-                console.log(this.imageUrl);
-            }
-        } 
-        let p5p5p5 = new p5(s);
+        this.setup = function() {
+            this.canvas = createCanvas(128,128);
+            this.canvas.hide();
+        }
+
+        this.draw = function() {
+            background(0);
+            ellipse(64,64,64,64);
+            this.imageUrl = this.canvas.elt.toDataURL();
+            //console.log(this.imageUrl);
+            loaded(this.imageUrl);
+        }
+        this.setup();
+        this.draw();
     }
 
     image(){
