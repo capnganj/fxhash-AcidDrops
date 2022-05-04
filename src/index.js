@@ -74,7 +74,7 @@ function init() {
   p1.position.set( 5, 5, 5);
   scene.add(p1);
   const p2 = new THREE.PointLight( 0xcccccc, 1);
-  p2.position.set( -5, 3, -5);
+  p2.position.set( -5, 5, -5);
   scene.add(p2);
   const p3 = new THREE.PointLight( 0xcccccc, 1);
   p3.position.set( -5, 1, 5);
@@ -92,6 +92,7 @@ function init() {
   controls.enableDamping=true;
   controls.dampingFactor = 0.2;
   controls.autoRotate= true;
+  controls.autoRotateSpeed = 1.0;
   controls.maxDistance = 10;
   controls.minDistance = 2;
 
@@ -107,7 +108,7 @@ function init() {
     refractionRatio: 0.85,
     reflectivity: 1.0,
     shininess: 100,
-    opacity: 0.85,
+    opacity: 0.75,
     transparent: true,
     //flatShading: true
   });
