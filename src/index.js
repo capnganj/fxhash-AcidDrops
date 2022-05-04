@@ -17,7 +17,8 @@ window.$fxhashData = feet;
 window.$fxhashFeatures = {
   "Palette" : feet.color.name,
   "Scale" : feet.scale.tag,
-  "Speed": feet.speed.tag
+  "Speed": feet.speed.tag,
+  "Density": feet.density.tag
 };
 console.log(window.$fxhashFeatures);
 console.log(feet);
@@ -99,7 +100,7 @@ function init() {
 
 
   //bubble geometry
-  const b = new THREE.IcosahedronGeometry(1.5, 10);
+  const b = new THREE.IcosahedronGeometry(1.5, 15);
 
   //phong
   const m = new THREE.MeshPhongMaterial({

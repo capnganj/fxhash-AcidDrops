@@ -32,7 +32,8 @@ class Textures {
         this.canvas.hide();
         this.bubbleColors = [
             this.feet.color.cero, this.feet.color.uno, this.feet.color.dos, this.feet.color.tres, this.feet.color.quatro, this.feet.color.cinco, this.feet.color.sies, this.feet.color.siete
-        ]
+        ];
+        this.bubbleDensity = this.feet.density.value;
         
         //call the draw function
         //this should be done in a loop that handles color generation and coordination
@@ -58,7 +59,7 @@ class Textures {
         this.radialGradient(0, this.width, this.feet.color.cinco, bc, cornerWidths[5]);
         this.radialGradient(this.width, this.width, this.feet.color.sies, bc, cornerWidths[6]);
 
-        this.drawBubbles(33);
+        this.drawBubbles(this.bubbleDensity);
         this.pX = this.canvas.elt.toDataURL();
 
         //nX
@@ -68,18 +69,17 @@ class Textures {
         this.radialGradient(this.width, this.width, this.feet.color.quatro, bc, cornerWidths[4]);
         this.radialGradient(0, this.width, this.feet.color.siete, bc, cornerWidths[7]);
         
-        this.drawBubbles(33);
+        this.drawBubbles(this.bubbleDensity);
         this.nX = this.canvas.elt.toDataURL();
 
         //pY
         background(bc.r, bc.g, bc.b);
-        
         this.radialGradient(0, this.width, this.feet.color.cero, bc, cornerWidths[0]);
         this.radialGradient(this.width, this.width, this.feet.color.uno, bc, cornerWidths[1]);
         this.radialGradient(this.width, 0, this.feet.color.dos, bc, cornerWidths[2]);
         this.radialGradient(0, 0, this.feet.color.tres, bc, cornerWidths[3]);
 
-        this.drawBubbles(10);
+        this.drawBubbles(this.bubbleDensity/3);
         this.pY = this.canvas.elt.toDataURL();
 
         //nY
@@ -89,7 +89,7 @@ class Textures {
         this.radialGradient(this.width, this.width, this.feet.color.sies, bc, cornerWidths[6]);
         this.radialGradient(0, this.width, this.feet.color.siete, bc, cornerWidths[7]);
 
-        this.drawBubbles(10);
+        this.drawBubbles(this.bubbleDensity/3);
         this.nY = this.canvas.elt.toDataURL();
 
         //pZ
@@ -99,7 +99,7 @@ class Textures {
         this.radialGradient(0, this.width, this.feet.color.quatro, bc, cornerWidths[4]);
         this.radialGradient(this.width, this.width, this.feet.color.cinco, bc, cornerWidths[5]);
 
-        this.drawBubbles(33);
+        this.drawBubbles(this.bubbleDensity);
         this.pZ = this.canvas.elt.toDataURL();
 
         //nZ
@@ -109,14 +109,15 @@ class Textures {
         this.radialGradient(0, this.width, this.feet.color.sies, bc, cornerWidths[6]);
         this.radialGradient(this.width, this.width, this.feet.color.siete, bc, cornerWidths[7]);
 
-        this.drawBubbles(33);
+        this.drawBubbles(this.bubbleDensity);
         this.nZ = this.canvas.elt.toDataURL();
 
-        //console.log(this.imageUrl);
+        
+        //callback to main - these are the data urls that get loaded in threejs <3
         this.loaded([this.pX, this.nX, this.pY, this.nY, this.pZ, this.nZ]);
     }
 
-    //draw radial gradient function.  called to generate radial gradients from corners of the cube
+    //draw radial gradient function - draws from outside to in, transparent at the edge, opaque in the middle
     radialGradient(x, y, centerColor, edgeColor, rad){
         let radius = rad;
         for (let r = radius; r > 0; --r) {
@@ -143,12 +144,9 @@ class Textures {
             //random size
             let r = this.feet.map(fxrand(), 0, 1, this.width/10, this.width/3);
 
-            //draw a circle using one of the 8 colors
+            //draw a bubble using one of the 8 colors
             let col = this.bubbleColors[parseInt(this.feet.map(fxrand(), 0, 1, 0, 7))];
-
             this.radialGradient(x, y, col, this.feet.color.background, r);
-            //fill(col.r, col.g, col.b, parseInt(this.feet.map(fxrand(), 0, 1, 25, 100)));
-            //ellipse(x, y, r, r);
         }
     }
 }

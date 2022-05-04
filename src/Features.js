@@ -35,6 +35,13 @@ class Features {
             fragmentValue: 1.0
         }
         this.setSpeed();
+
+        //drives bubble density in the textures generation
+        this.density = {
+            tag: "",
+            value: 0
+        }
+        this.setDensity();
     }
 
     //map function logic from processing <3
@@ -157,7 +164,7 @@ class Features {
         this.scale.dispValue = this.map(s, 0, 1, 0.125, 0.25);
     }
 
-    //set vertex and ragment speeds
+    //set vertex and fragment speeds
     setSpeed(){
         let s = fxrand();
         if (s < 0.44) {
@@ -174,6 +181,24 @@ class Features {
         }
         this.speed.vertexValue = this.map(s, 0, 1, 0.25, 0.75);
         this.speed.fragmentValue = this.map(s, 0, 1, 0.25, 1.75);
+    }
+
+    //set texture density
+    setDensity(){
+        let d = fxrand();
+        if (d < 0.33) {
+            this.density.tag = "Sparse";
+        }
+        else if (d < 0.55) {
+            this.density.tag = "Even";
+        }
+        else if (d < 0.88) {
+            this.density.tag = "Dense";
+        }
+        else{
+            this.density.tag = "Packed"
+        }
+        this.density.value = parseInt(this.map(d, 0, 1, 10, 100));
     }
 }
 
