@@ -71,21 +71,31 @@ function init() {
   camera.position.set( 0, 0, 4 );
 
   //lights
-  const p1 = new THREE.PointLight( 0xcccccc, 1);
-  p1.position.set( 5, 5, 5);
+  const p1 = new THREE.PointLight( feet.color.cero, 0.5);
+  p1.position.set( 5, 10, 5);
   scene.add(p1);
-  const p2 = new THREE.PointLight( 0xcccccc, 1);
-  p2.position.set( -5, 5, -5);
+  const p2 = new THREE.PointLight( feet.color.uno, 0.5);
+  p2.position.set( -5, 10, -5);
   scene.add(p2);
-  const p3 = new THREE.PointLight( 0xcccccc, 1);
-  p3.position.set( -5, 1, 5);
+  const p3 = new THREE.PointLight( feet.color.dos, 0.5);
+  p3.position.set( -5, 5, 5);
   scene.add(p3);
-  const p4 = new THREE.PointLight( 0xcccccc, 1);
-  p4.position.set( 5, 1, -5);
+  const p4 = new THREE.PointLight( feet.color.tres, 0.5);
+  p4.position.set( 5, 5, -5);
   scene.add(p4);
-  //const hem = new THREE.HemisphereLight( 0xcccccc, 0xdedede, 0.666);
-  //scene.add(hem);
-  const amb = new THREE.AmbientLight( 0xcccccc, 1.0);
+  const p5 = new THREE.PointLight( feet.color.quatro, 0.5);
+  p5.position.set( 5, -5, 5);
+  scene.add(p5);
+  const p6 = new THREE.PointLight( feet.color.cinco, 0.5);
+  p6.position.set( -5, -5, -5);
+  scene.add(p6);
+  const p7 = new THREE.PointLight( feet.color.sies, 0.5);
+  p7.position.set( -5, -1, 5);
+  scene.add(p7);
+  const p8 = new THREE.PointLight( feet.color.siete, 0.5);
+  p8.position.set( 5, -1, -5);
+  scene.add(p8);
+  const amb = new THREE.AmbientLight( 0xcccccc, 0.35);
   scene.add(amb);
 
   // controls
@@ -95,7 +105,7 @@ function init() {
   controls.autoRotate= true;
   controls.autoRotateSpeed = 1.0;
   controls.maxDistance = 10;
-  controls.minDistance = 2;
+  controls.minDistance = 3;
 
 
 
