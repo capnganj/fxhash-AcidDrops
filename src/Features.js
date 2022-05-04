@@ -116,15 +116,15 @@ class Features {
 
     //set individual colors for background and shader
     setColors() {
-        this.color.background = this.interpolateFn(fxrand());
+        this.color.background = this.interpolateFn(this.map(fxrand(), 0, 1, 0.2, 0.8));
         this.color.cero = this.interpolateFn(this.map(fxrand(), 0, 1, 0, 0.125));
         this.color.uno = this.interpolateFn(this.map(fxrand(), 0, 1, 0, 0.25));
-        this.color.dos = this.interpolateFn(this.map(fxrand(), 0, 1, 0, 0.375));
-        this.color.tres = this.interpolateFn(this.map(fxrand(), 0, 1, 0, 0.5));
-        this.color.quatro = this.interpolateFn(this.map(fxrand(), 0, 1, 0, 0.5));
-        this.color.cinco = this.interpolateFn(this.map(fxrand(), 0, 1, 0, 0.5));
-        this.color.sies = this.interpolateFn(this.map(fxrand(), 0, 1, 0, 0.5));
-        this.color.siete = this.interpolateFn(this.map(fxrand(), 0, 1, 0, 0.5));
+        this.color.dos = this.interpolateFn(this.map(fxrand(), 0, 1, 0.25, 0.375));
+        this.color.tres = this.interpolateFn(this.map(fxrand(), 0, 1, 0.25, 0.5));
+        this.color.quatro = this.interpolateFn(this.map(fxrand(), 0, 1, 0.5, 0.625));
+        this.color.cinco = this.interpolateFn(this.map(fxrand(), 0, 1, 0.5, 0.75));
+        this.color.sies = this.interpolateFn(this.map(fxrand(), 0, 1, 0.75, 0.875));
+        this.color.siete = this.interpolateFn(this.map(fxrand(), 0, 1, 0.75, 1));
 
         //invert 33%
         if (fxrand() > 0.666) {
