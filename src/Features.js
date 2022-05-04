@@ -8,9 +8,14 @@ class Features {
         this.color = {
             name: "",
             background: {},
+            cero: {},
             uno: {},
             dos: {},
-            tres: {}
+            tres: {},
+            quatro: {},
+            cinco: {},
+            sies:{},
+            siete: {}
         };
         this.setColorPalette();
         this.setColors();
@@ -30,20 +35,6 @@ class Features {
             fragmentValue: 1.0
         }
         this.setSpeed();
-
-        //drives brightness uniform in fragment shader
-        this.brightness = {
-            tag: "",
-            value: 1.0
-        }
-        this.setBrightness();
-
-        //permutations in fragment shader
-        this.permutations = {
-            tag: "",
-            value: 4.0
-        }
-        this.setPermutations();
     }
 
     //map function logic from processing <3
@@ -126,16 +117,26 @@ class Features {
     //set individual colors for background and shader
     setColors() {
         this.color.background = this.interpolateFn(fxrand());
-        this.color.uno = this.interpolateFn(this.map(fxrand(),0,1,0,0.25));
-        this.color.dos = this.interpolateFn(this.map(fxrand(),0,1,0.25,0.75));
-        this.color.tres = this.interpolateFn(this.map(fxrand(),0,1,0.75,1));
+        this.color.cero = this.interpolateFn(this.map(fxrand(), 0, 1, 0, 0.125));
+        this.color.uno = this.interpolateFn(this.map(fxrand(), 0, 1, 0, 0.25));
+        this.color.dos = this.interpolateFn(this.map(fxrand(), 0, 1, 0, 0.375));
+        this.color.tres = this.interpolateFn(this.map(fxrand(), 0, 1, 0, 0.5));
+        this.color.quatro = this.interpolateFn(this.map(fxrand(), 0, 1, 0, 0.5));
+        this.color.cinco = this.interpolateFn(this.map(fxrand(), 0, 1, 0, 0.5));
+        this.color.sies = this.interpolateFn(this.map(fxrand(), 0, 1, 0, 0.5));
+        this.color.siete = this.interpolateFn(this.map(fxrand(), 0, 1, 0, 0.5));
 
         //invert 33%
         if (fxrand() > 0.666) {
             this.color.background = this.invertColor(this.color.background);
+            this.color.cero = this.invertColor(this.color.cero);
             this.color.uno = this.invertColor(this.color.uno);
             this.color.dos = this.invertColor(this.color.dos);
             this.color.tres = this.invertColor(this.color.tres);
+            this.color.quatro = this.invertColor(this.color.quatro);
+            this.color.cinco = this.invertColor(this.color.cinco);
+            this.color.sies = this.invertColor(this.color.sies);
+            this.color.siete = this.invertColor(this.color.siete);
             this.color.name += " Invert";
         }
     }
@@ -173,39 +174,6 @@ class Features {
         }
         this.speed.vertexValue = this.map(s, 0, 1, 0.25, 0.75);
         this.speed.fragmentValue = this.map(s, 0, 1, 0.25, 1.75);
-    }
-
-    //set fragment brightness
-    setBrightness(){
-        let b = fxrand();
-        if (b < 0.41) {
-            this.brightness.tag = "Dark";
-        }
-        else if (b < 0.63) {
-            this.brightness.tag = "Even";
-        }
-        else{
-            this.brightness.tag = "Bright";
-        }
-        this.brightness.value = this.map(b, 0, 1, 0.75, 2.0);
-    }
-
-    //set fragment permutations
-    setPermutations(){
-        let p = fxrand();
-        if (p < 0.19) {
-            this.permutations.tag = "Sunlight";
-        }
-        else if (p < 0.39) {
-            this.permutations.tag = "Twilight";
-        }
-        else if (p < 0.73) {
-            this.permutations.tag = "Midnight";
-        }
-        else {
-            this.permutations.tag = "Abyssal";
-        }
-        this.permutations.value = this.map(p, 0, 1, 3, 5);
     }
 }
 

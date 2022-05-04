@@ -4,9 +4,9 @@
 //imports
 import { Features } from './Features';
 import { Textures } from './Textures';
-
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import UV from './UV.png'
 
 
 //1) - generate fxhash features - global driving parameters
@@ -18,9 +18,7 @@ window.$fxhashData = feet;
 window.$fxhashFeatures = {
   "Palette" : feet.color.name,
   "Scale" : feet.scale.tag,
-  "Speed": feet.speed.tag,
-  "Brightness": feet.brightness.tag,
-  "Depth": feet.permutations.tag
+  "Speed": feet.speed.tag
 };
 console.log(window.$fxhashFeatures);
 console.log(feet);
@@ -45,10 +43,10 @@ let previewed = false;
 var cuber;
 
 //p5 textures generation
-let txt = new Textures((dataUrl) => {
-  console.log("callback", dataUrl);
-  const genUrls = [dataUrl,dataUrl,dataUrl,dataUrl,dataUrl,dataUrl];
-  cuber = new THREE.CubeTextureLoader().load(genUrls, () => {});
+let txt = new Textures(feet, (dataUrls) => {
+  //console.log("callback", dataUrl);
+  const UVs = [UV,UV,UV,UV,UV,UV];
+  cuber = new THREE.CubeTextureLoader().load(dataUrls, () => {});
   cuber.mapping = THREE.CubeRefractionMapping;
   init();
 });
@@ -60,7 +58,7 @@ var matShader, controls, renderer, scene, camera;
 function init() {
   //scene & camera
   scene = new THREE.Scene();
-  scene.background = cuber;
+  //scene.background = cuber;
 
   renderer = new THREE.WebGLRenderer( { 
     antialias: true,
@@ -86,8 +84,10 @@ function init() {
   const p4 = new THREE.PointLight( 0xcccccc, 1);
   p4.position.set( 5, 1, -5);
   scene.add(p4);
-  const hem = new THREE.HemisphereLight( 0xcccccc, 0xdedede, 0.666);
-  scene.add(hem);
+  //const hem = new THREE.HemisphereLight( 0xcccccc, 0xdedede, 0.666);
+  //scene.add(hem);
+  const amb = new THREE.AmbientLight( 0xcccccc, 1.0);
+  scene.add(amb);
 
   // controls
   controls = new OrbitControls( camera, renderer.domElement );
@@ -107,9 +107,11 @@ function init() {
     side: THREE.DoubleSide,
     envMap: cuber,
     refractionRatio: 0.85,
-    reflectivity: 0.99,
-    opacity: 0.5,
-    transparent: true
+    reflectivity: 1.0,
+    shininess: 100,
+    opacity: 0.85,
+    transparent: true,
+    //flatShading: true
   });
   m.onBeforeCompile = function(shader){
 
@@ -127,6 +129,9 @@ function init() {
 
   const mesh = new THREE.Mesh(b, m);
   scene.add(mesh);
+
+  const axis = new THREE.AxesHelper(3);
+  //scene.add(axis);
 
 
   //set the background color 
