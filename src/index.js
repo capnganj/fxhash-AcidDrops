@@ -6,7 +6,6 @@ import { Features } from './Features';
 import { Textures } from './Textures';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import UV from './UV.png'
 
 
 //1) - generate fxhash features - global driving parameters
@@ -45,7 +44,6 @@ var cuber;
 //p5 textures generation
 let txt = new Textures(feet, (dataUrls) => {
   //console.log("callback", dataUrl);
-  const UVs = [UV,UV,UV,UV,UV,UV];
   cuber = new THREE.CubeTextureLoader().load(dataUrls, () => {});
   cuber.mapping = THREE.CubeRefractionMapping;
   init();
