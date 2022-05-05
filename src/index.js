@@ -63,6 +63,7 @@ function init() {
     antialias: true,
     alpha: true
   } );
+  
   renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
@@ -83,16 +84,16 @@ function init() {
   const p4 = new THREE.PointLight( feet.color.tres, 0.5);
   p4.position.set( 5, 5, -5);
   scene.add(p4);
-  const p5 = new THREE.PointLight( feet.color.quatro, 0.5);
+  const p5 = new THREE.PointLight( feet.color.quatro, 0.25);
   p5.position.set( 5, -5, 5);
   scene.add(p5);
-  const p6 = new THREE.PointLight( feet.color.cinco, 0.5);
+  const p6 = new THREE.PointLight( feet.color.cinco, 0.25);
   p6.position.set( -5, -5, -5);
   scene.add(p6);
-  const p7 = new THREE.PointLight( feet.color.sies, 0.5);
+  const p7 = new THREE.PointLight( feet.color.sies, 0.25);
   p7.position.set( -5, -1, 5);
   scene.add(p7);
-  const p8 = new THREE.PointLight( feet.color.siete, 0.5);
+  const p8 = new THREE.PointLight( feet.color.siete, 0.25);
   p8.position.set( 5, -1, -5);
   scene.add(p8);
   const amb = new THREE.AmbientLight( 0xcccccc, 0.35);
@@ -146,7 +147,7 @@ function init() {
 
   //set the background color 
   let bod = document.body;
-  bod.style.backgroundColor = feet.color.background;
+  bod.style.backgroundColor = feet.desaturateColor(feet.color.background, 1.5);
 
   //set up resize listener and let it rip!
   window.addEventListener( 'resize', onWindowResize );

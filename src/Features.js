@@ -100,6 +100,13 @@ class Features {
         }
     }
 
+    //desaturate by some %
+    desaturateColor(col, percent) {
+        //let h = hsl(col);
+        //h -= percent;
+        return col.darker(percent);
+    }
+
     //set color palette globally
     setColorPalette() {
         let c = fxrand();
