@@ -20,8 +20,8 @@ window.$fxhashFeatures = {
   "Speed": feet.speed.tag,
   "Density": feet.density.tag
 };
-console.log(window.$fxhashFeatures);
-console.log(feet);
+//console.log(window.$fxhashFeatures);
+//console.log(feet);
 
 //vars related to fxhash preview call
 //loaded tracks whether texture has loaded;
@@ -57,7 +57,8 @@ var matShader, controls, renderer, scene, camera;
 function init() {
   //scene & camera
   scene = new THREE.Scene();
-  //scene.background = cuber;
+  let bc = feet.desaturateColor(feet.color.background, 1.5);
+  scene.background = new THREE.Color(bc.r/255, bc.g/255, bc.b/255);
 
   renderer = new THREE.WebGLRenderer( { 
     antialias: true,
@@ -66,6 +67,7 @@ function init() {
   
   renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.domElement.id = "hashish";
   document.body.appendChild( renderer.domElement );
 
   camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.01, 1000 );
@@ -170,6 +172,9 @@ function animate() {
   
   if (matShader) {
     matShader.uniforms.time.value = performance.now() / 1000;
+    if(loaded == false){
+      loaded = true;
+    }
   }
   
 
@@ -183,11 +188,19 @@ function render() {
 
   renderer.render( scene, camera );
 
-  if(previewed == false && loaded == true){
+  if(previewed == false && loaded == true && renderer.info.render.frame > 100){
     fxpreview();
     previewed = true;
+    //download();
   } 
 
   //mesh.rotation.y += 0.001;
 
+}
+
+function download() {
+  var link = document.createElement('a');
+  link.download = 'AcidDrops.png';
+  link.href = document.getElementById('hashish').toDataURL()
+  link.click();
 }
